@@ -209,7 +209,7 @@ const Dashboard = () => {
                     </DataTable>
 
                     <h5>Recent Sales API</h5>
-                    <DataTable value={productsAPI} rows={3} paginator responsiveLayout="scroll">
+                    <DataTable value={productsAPI} rows={4} paginator responsiveLayout="scroll">
                         <Column field="id" header="#ID" sortable style={{ width: '15%' }} />
                         <Column field="name" header="Name" sortable style={{ width: '35%' }} />
                         <Column field="description" header="desc" sortable style={{ width: '35%' }} />
