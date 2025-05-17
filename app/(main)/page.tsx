@@ -36,6 +36,7 @@ const lineData: ChartData = {
 
 const Dashboard = () => {
     const [products, setProducts] = useState<Demo.Product[]>([]);
+    const [productsAPI, setProductsAPI] = useState<Demo.ProductAPI[]>([]);
     const menu1 = useRef<Menu>(null);
     const menu2 = useRef<Menu>(null);
     const [lineOptions, setLineOptions] = useState<ChartOptions>({});
@@ -107,6 +108,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         ProductService.getProductsSmall().then((data) => setProducts(data));
+        ProductService.getProductsSmallApi().then((data) => setProductsAPI(data));
     }, []);
 
     useEffect(() => {
@@ -192,6 +194,7 @@ const Dashboard = () => {
                     <h5>Recent Sales</h5>
                     <DataTable value={products} rows={5} paginator responsiveLayout="scroll">
                         <Column header="Image" body={(data) => <img className="shadow-2" src={`/demo/images/product/${data.image}`} alt={data.image} width="50" />} />
+                        <Column field="id" header="#ID" sortable style={{ width: '15%' }} />
                         <Column field="name" header="Name" sortable style={{ width: '35%' }} />
                         <Column field="price" header="Price" sortable style={{ width: '35%' }} body={(data) => formatCurrency(data.price)} />
                         <Column
@@ -203,6 +206,14 @@ const Dashboard = () => {
                                 </>
                             )}
                         />
+                    </DataTable>
+
+                    <h5>Recent Sales API</h5>
+                    <DataTable value={productsAPI} rows={3} paginator responsiveLayout="scroll">
+                        <Column field="id" header="#ID" sortable style={{ width: '15%' }} />
+                        <Column field="name" header="Name" sortable style={{ width: '35%' }} />
+                        <Column field="description" header="desc" sortable style={{ width: '35%' }} />
+                        <Column field="price" header="Price" sortable style={{ width: '15%' }} body={(data) => formatCurrency(data.price)} />
                     </DataTable>
                 </div>
                 <div className="card">
