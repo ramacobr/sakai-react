@@ -7,6 +7,12 @@ export const ProductService = {
             .then((d) => d.data as Demo.Product[]);
     },
 
+    getProductsSmallApi() {
+        return fetch('http://localhost:8080/v1/products', { headers: { 'Cache-Control': 'no-cache' } })
+            .then((res) => res.json())
+            .then((d) => d.data as Demo.ProductAPI[]);
+    },
+
     getProducts() {
         return fetch('/demo/data/products.json', { headers: { 'Cache-Control': 'no-cache' } })
             .then((res) => res.json())

@@ -133,6 +133,13 @@ declare namespace Demo {
         [key: string]: string | string[] | number | boolean | undefined | ProductOrder[] | InventoryStatus;
     };
 
+    type ProductAPI = {
+        id?: number;
+        name: string;
+        description: string;
+        price?: number;
+    };
+
     type ProductOrder = {
         id?: string;
         productCode?: string;
