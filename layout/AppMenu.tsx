@@ -87,6 +87,11 @@ const AppMenu = () => {
                     to: '/pages/crud'
                 },
                 {
+                    label: 'Crud-API',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/crud2'
+                },
+                {
                     label: 'Timeline',
                     icon: 'pi pi-fw pi-calendar',
                     to: '/pages/timeline'
