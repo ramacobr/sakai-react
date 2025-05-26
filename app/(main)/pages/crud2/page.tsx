@@ -171,20 +171,20 @@ const CrudAPI = () => {
         });
     };
 
-    const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
-        const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
-        _product[`${name}`] = val;
-
-        setProduct(_product);
+    type ProductField = keyof Demo.ProductAPI;
+    
+    const onInputChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      name: ProductField
+    ) => {
+      const val = e.target?.value || '';
+      setProduct({ ...product, [name]: val });
     };
 
-    const onInputNumberChange = (e: InputNumberValueChangeEvent, name: string) => {
+    const onInputNumberChange = (e: InputNumberValueChangeEvent, name: ProductField) => {
         const val = e.value || 0;
         let _product = { ...product };
-        _product[`${name}`] = val;
-
-        setProduct(_product);
+        setProduct({ ...product, [name]: val });
     };
 
     const leftToolbarTemplate = () => {
