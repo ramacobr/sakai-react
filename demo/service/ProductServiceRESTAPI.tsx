@@ -1,6 +1,5 @@
 // 'use server';
 import { Demo } from '@/types';
-import { get } from 'http';
 
 const productsApiUrl = 'http://localhost:8080/v1/products';
 

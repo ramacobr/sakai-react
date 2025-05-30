@@ -136,24 +136,26 @@ const CrudAPI = () => {
 
     const deleteProduct = () => {
         let _products = (products as any)?.filter((val: any) => val.id !== product.id);
-        ProductService.delete(product.id.toString())
-        .then(() => {
-            toast.current?.show({
-                severity: 'success',
-                summary: 'Successful',
-                detail: 'Product Deleted',
-                life: 3000
+        if (product.id !== undefined) {
+            ProductService.delete(product.id.toString())
+            .then(() => {
+                toast.current?.show({
+                    severity: 'success',
+                    summary: 'Successful',
+                    detail: 'Product Deleted',
+                    life: 3000
+                })
             })
-        })
-        .catch((error) => {
-            console.error('Error deleting product:', error);
-            toast.current?.show({
-                severity: 'warn',
-                summary: 'Failed',
-                detail: 'Product not deleted',
-                life: 3000
+            .catch((error) => {
+                console.error('Error deleting product:', error);
+                toast.current?.show({
+                    severity: 'warn',
+                    summary: 'Failed',
+                    detail: 'Product not deleted',
+                    life: 3000
+                });
             });
-        });
+        }
         setProducts(_products);
         setDeleteProductDialog(false);
         setProduct(emptyProductApi);
