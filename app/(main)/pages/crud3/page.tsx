@@ -77,6 +77,7 @@ const CrudAPI = () => {
                 ProductService.update(_product)
                 .then(() => {
                     _products[index] = _product;
+                    setProducts(_products as any);
                     toast.current?.show({
                         severity: 'success',
                         summary: 'Successful',
@@ -100,6 +101,7 @@ const CrudAPI = () => {
                 .then((data) => {
                     _product.id = data.id; // Assuming the API returns the created product with an ID
                     _products.push(_product);
+                    setProducts(_products as any);
                     toast.current?.show({
                         severity: 'success',
                         summary: 'Successful',
