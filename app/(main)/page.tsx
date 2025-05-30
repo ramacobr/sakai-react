@@ -7,6 +7,7 @@ import { DataTable } from 'primereact/datatable';
 import { Menu } from 'primereact/menu';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ProductService } from '../../demo/service/ProductService';
+import { ProductServiceRestAPI } from '../../demo/service/ProductServiceRESTAPI';
 import { LayoutContext } from '../../layout/context/layoutcontext';
 import Link from 'next/link';
 import { Demo } from '@/types';
@@ -110,8 +111,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         ProductService.getProductsSmall().then((data) => setProducts(data));
-        ProductService.getProductsSmallApi().then((data) => setProductsAPI(data));
-        console.log('Keycloak Token:', keycloak.keycloak?.token);
+        ProductServiceRestAPI(keycloak.keycloak?.token).listAll().then((data) => setProductsAPI(data));
     }, []);
 
     useEffect(() => {

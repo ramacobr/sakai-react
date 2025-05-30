@@ -11,7 +11,7 @@ export function removeProp<T extends object, K extends keyof T>(obj: T, prop: K)
   return rest;
 }
 
-export const ProductService = (keycloakToken: string) => ({
+export const ProductServiceRestAPI = (keycloakToken: string) => ({
     listAll() {
         return fetch(productsApiUrl, { headers: { 'Cache-Control': 'no-cache', 'Authorization': `Bearer ${keycloakToken}` } })
             .then((res) => res.json())
