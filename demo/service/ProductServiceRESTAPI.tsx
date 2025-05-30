@@ -2,6 +2,7 @@
 import { Demo } from '@/types';
 
 const productsApiUrl = 'http://localhost:8080/v1/products';
+// const productsApiUrl =  process.env.PRODUCT_SERVICE_URL;
 
 export function removeProp<T extends object, K extends keyof T>(obj: T, prop: K): Omit<T, K> {
   const { [prop]: _, ...rest } = obj;
