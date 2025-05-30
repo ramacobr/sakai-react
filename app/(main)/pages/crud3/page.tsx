@@ -11,9 +11,10 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { ProductService, removeProp } from '../../../../demo/service/ProductServiceRESTAPI';
 import { Demo } from '@/types';
+import { AuthContext } from '../../../../layout/KeycloakContext/page';
 
 /* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
 const CrudAPI = () => {
@@ -24,6 +25,7 @@ const CrudAPI = () => {
         price: 0
     };
 
+    const keycloak = useContext(AuthContext);
     const [products, setProducts] = useState<Demo.ProductAPI[]>([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -36,7 +38,7 @@ const CrudAPI = () => {
     const dt = useRef<DataTable<any>>(null);
 
     useEffect(() => {
-        ProductService.listAll().then((data) => setProducts(data));
+        ProductService(`${keycloak.keycloak?.token}`).listAll().then((data) => setProducts(data));
     }, []);
 
     const formatCurrency = (value: number) => {
@@ -74,7 +76,7 @@ const CrudAPI = () => {
             if (product.id) {
                 const index = findIndexById(product.id);
 
-                ProductService.update(_product)
+                ProductService(`${keycloak.keycloak?.token}`).update(_product)
                 .then(() => {
                     _products[index] = _product;
                     setProducts(_products as any);
@@ -97,7 +99,7 @@ const CrudAPI = () => {
             } else {
                 // _product.id = createId();
                 const _newProduct = removeProp(_product, 'id'); // Remove id for creation
-                ProductService.create(_newProduct)
+                ProductService(`${keycloak.keycloak?.token}`).create(_newProduct)
                 .then((data) => {
                     _product.id = data.id; // Assuming the API returns the created product with an ID
                     _products.push(_product);
@@ -139,7 +141,7 @@ const CrudAPI = () => {
     const deleteProduct = () => {
         let _products = (products as any)?.filter((val: any) => val.id !== product.id);
         if (product.id !== undefined) {
-            ProductService.delete(product.id.toString())
+            ProductService(`${keycloak.keycloak?.token}`).delete(product.id.toString())
             .then(() => {
                 toast.current?.show({
                     severity: 'success',

@@ -1,5 +1,7 @@
 // 'use server';
 import { Demo } from '@/types';
+import { AuthContext } from '../../layout/KeycloakContext/page';
+import { useContext } from 'react';
 
 const productsApiUrl = 'http://localhost:8080/v1/products';
 // const productsApiUrl =  process.env.PRODUCT_SERVICE_URL;
@@ -9,14 +11,14 @@ export function removeProp<T extends object, K extends keyof T>(obj: T, prop: K)
   return rest;
 }
 
-export const ProductService = {
+export const ProductService = (keycloakToken: string) => ({
     listAll() {
-        return fetch(productsApiUrl, { headers: { 'Cache-Control': 'no-cache' } })
+        return fetch(productsApiUrl, { headers: { 'Cache-Control': 'no-cache', 'Authorization': `Bearer ${keycloakToken}` } })
             .then((res) => res.json())
             .then((d) => d as Demo.ProductAPI[]);
     },
     getById(id: string) {
-        return fetch(`${productsApiUrl}/${id}`, { headers: { 'Cache-Control': 'no-cache' } })
+        return fetch(`${productsApiUrl}/${id}`, { headers: { 'Cache-Control': 'no-cache', 'Authorization': `Bearer ${keycloakToken}` } })
             .then((res) => res.json())
             .then((d) => d as Demo.ProductAPI);
     },
@@ -25,7 +27,8 @@ export const ProductService = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+                'Cache-Control': 'no-cache',
+                'Authorization': `Bearer ${keycloakToken}`
             },
             body: JSON.stringify(product)
         }).then((res) => res.json());
@@ -35,7 +38,8 @@ export const ProductService = {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+                'Cache-Control': 'no-cache',
+                'Authorization': `Bearer ${keycloakToken}`
             },
             body: JSON.stringify(product)
         }).then((res) => res.json());
@@ -43,7 +47,7 @@ export const ProductService = {
     delete(id: string) {
         return fetch(`${productsApiUrl}/${id}`, {
             method: 'DELETE',
-            headers: { 'Cache-Control': 'no-cache' }
+            headers: { 'Cache-Control': 'no-cache', 'Authorization': `Bearer ${keycloakToken}` }
         }).then((res) => res.json());
     },
-};
+});

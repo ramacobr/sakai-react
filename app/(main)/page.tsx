@@ -11,6 +11,7 @@ import { LayoutContext } from '../../layout/context/layoutcontext';
 import Link from 'next/link';
 import { Demo } from '@/types';
 import { ChartData, ChartOptions } from 'chart.js';
+import { AuthContext } from '../../layout/KeycloakContext/page';
 
 const lineData: ChartData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -35,6 +36,7 @@ const lineData: ChartData = {
 };
 
 const Dashboard = () => {
+    const keycloak = React.useContext(AuthContext);
     const [products, setProducts] = useState<Demo.Product[]>([]);
     const [productsAPI, setProductsAPI] = useState<Demo.ProductAPI[]>([]);
     const menu1 = useRef<Menu>(null);
@@ -109,6 +111,7 @@ const Dashboard = () => {
     useEffect(() => {
         ProductService.getProductsSmall().then((data) => setProducts(data));
         ProductService.getProductsSmallApi().then((data) => setProductsAPI(data));
+        console.log('Keycloak Token:', keycloak.keycloak?.token);
     }, []);
 
     useEffect(() => {
