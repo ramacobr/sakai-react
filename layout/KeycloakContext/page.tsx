@@ -1,13 +1,9 @@
 import Keycloak from 'keycloak-js';
 import React, { createContext, useEffect, useState } from 'react';
 
-const KEYCLOAK_ISSUER = process.env.KEYCLOAK_ISSUER || 'http://localhost:8282';
-const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM || 'quarkus';
-const KEYCLOAK_CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID || 'frontend-client';
-
-console.log("\nKeycloak URL......:", KEYCLOAK_ISSUER);
-console.log("Keycloak Realm....:", KEYCLOAK_REALM);
-console.log("Keycloak Client ID:", KEYCLOAK_CLIENT_ID + "\n");
+const KEYCLOAK_ISSUER = process.env.KEYCLOAK_ISSUER;
+const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM;
+const KEYCLOAK_CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID;
 
 const keycloak = new Keycloak({
   url: KEYCLOAK_ISSUER,
@@ -23,7 +19,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     keycloak
       .init({ onLoad: 'login-required', checkLoginIframe: false })
-      .then((authenticated) => {
+      .then((authenticated: boolean) => {
         if (!authenticated) {
           window.location.reload();
         } else {
@@ -33,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setInterval(() => {
             keycloak
               .updateToken(60) // tenta renovar se expira em 60s ou menos
-              .then((refreshed) => {
+              .then((refreshed: boolean) => {
                 if (refreshed) {
                   console.log("Token renovado com sucesso");
                 }
@@ -45,15 +41,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }, 60000); // roda a cada 1 minuto
         }
       });
-    // keycloak
-    //   .init({ onLoad: 'login-required' })
-    //   .then((auth) => {
-    //     if (!auth) {
-    //       window.location.reload();
-    //     } else {
-    //       setInitialized(true);
-    //     }
-    //   });
   }, []);
 
   return (
