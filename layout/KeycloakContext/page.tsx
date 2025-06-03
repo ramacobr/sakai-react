@@ -1,14 +1,10 @@
 import Keycloak from 'keycloak-js';
 import React, { createContext, useEffect, useState } from 'react';
 
-const KEYCLOAK_ISSUER = process.env.KEYCLOAK_ISSUER;
-const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM;
-const KEYCLOAK_CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID;
-
 const keycloak = new Keycloak({
-  url: KEYCLOAK_ISSUER,
-  realm: KEYCLOAK_REALM,
-  clientId: KEYCLOAK_CLIENT_ID,
+  url: process.env.NEXT_PUBLIC_KEYCLOAK_ISSUER,
+  realm: process.env.NEXT_PUBLIC_KEYCLOAK_REALM,
+  clientId: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID,
 });
 
 export const AuthContext = createContext({ keycloak, initialized: false });
