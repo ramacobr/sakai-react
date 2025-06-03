@@ -1,14 +1,11 @@
 // 'use server';
 import { Demo } from '@/types';
-import { AuthContext } from '../../layout/KeycloakContext/page';
-import { useContext } from 'react';
 
 const productsApiUrl = 'http://localhost:8080/v1/products';
-// const productsApiUrl =  process.env.PRODUCT_SERVICE_URL;
 
 export function removeProp<T extends object, K extends keyof T>(obj: T, prop: K): Omit<T, K> {
-  const { [prop]: _, ...rest } = obj;
-  return rest;
+    const { [prop]: _, ...rest } = obj;
+    return rest;
 }
 
 export const ProductServiceRestAPI = (keycloakToken: string) => ({

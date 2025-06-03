@@ -38,7 +38,7 @@ const CrudAPI = () => {
     const dt = useRef<DataTable<any>>(null);
     
     useEffect(() => {
-        ProductServiceRestAPI(`${keycloak.keycloak?.token}`).listAll().then((data) => setProducts(data));
+        ProductServiceRestAPI(keycloak.keycloak?.token).listAll().then((data) => setProducts(data));
     }, []);
 
     const formatCurrency = (value: number) => {
@@ -76,7 +76,7 @@ const CrudAPI = () => {
             if (product.id) {
                 const index = findIndexById(product.id);
 
-                ProductServiceRestAPI(`${keycloak.keycloak?.token}`).update(_product)
+                ProductServiceRestAPI(keycloak.keycloak?.token).update(_product)
                 .then(() => {
                     _products[index] = _product;
                     setProducts(_products as any);
@@ -99,7 +99,7 @@ const CrudAPI = () => {
             } else {
                 // _product.id = createId();
                 const _newProduct = removeProp(_product, 'id'); // Remove id for creation
-                ProductServiceRestAPI(`${keycloak.keycloak?.token}`).create(_newProduct)
+                ProductServiceRestAPI(keycloak.keycloak?.token).create(_newProduct)
                 .then((data) => {
                     _product.id = data.id; // Assuming the API returns the created product with an ID
                     _products.push(_product);
@@ -141,7 +141,7 @@ const CrudAPI = () => {
     const deleteProduct = () => {
         let _products = (products as any)?.filter((val: any) => val.id !== product.id);
         if (product.id !== undefined) {
-            ProductServiceRestAPI(`${keycloak.keycloak?.token}`).delete(product.id.toString())
+            ProductServiceRestAPI(keycloak.keycloak?.token).delete(product.id.toString())
             .then(() => {
                 toast.current?.show({
                     severity: 'success',
@@ -210,6 +210,19 @@ const CrudAPI = () => {
 
     const deleteSelectedProducts = () => {
         let _products = (products as any)?.filter((val: any) => !(selectedProducts as any)?.includes(val));
+        if (_products.length >= 1) {
+            for (let product of (_products as Demo.ProductAPI[]) || []) {
+                if (product.id !== undefined) {
+                    ProductServiceRestAPI(keycloak.keycloak?.token).delete(product.id.toString())
+                    .then(() => {
+                      null  
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting product:', error);
+                    });
+                }
+            }
+        }
         setProducts(_products);
         setDeleteProductsDialog(false);
         setSelectedProducts(null);

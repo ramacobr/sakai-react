@@ -1,11 +1,18 @@
-// src/auth/KeycloakContext.tsx
 import Keycloak from 'keycloak-js';
 import React, { createContext, useEffect, useState } from 'react';
 
+const KEYCLOAK_ISSUER = process.env.KEYCLOAK_ISSUER || 'http://localhost:8282';
+const KEYCLOAK_REALM = process.env.KEYCLOAK_REALM || 'quarkus';
+const KEYCLOAK_CLIENT_ID = process.env.KEYCLOAK_CLIENT_ID || 'frontend-client';
+
+console.log("\nKeycloak URL......:", KEYCLOAK_ISSUER);
+console.log("Keycloak Realm....:", KEYCLOAK_REALM);
+console.log("Keycloak Client ID:", KEYCLOAK_CLIENT_ID + "\n");
+
 const keycloak = new Keycloak({
-  url: 'http://localhost:8282',
-  realm: 'quarkus',
-  clientId: 'frontend-client',
+  url: KEYCLOAK_ISSUER,
+  realm: KEYCLOAK_REALM,
+  clientId: KEYCLOAK_CLIENT_ID,
 });
 
 export const AuthContext = createContext({ keycloak, initialized: false });
